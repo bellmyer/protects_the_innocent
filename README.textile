@@ -100,6 +100,31 @@ instead of example output, since they're more complex:
   <tr><td>any static value</td>     <td>You can pass in any static value></td><td>"turkey"</td>
 </table>
 
+h3. Order in the Court
+
+Sometimes certain fields depend on others when a record is in the act of being
+protected. Let's say, for whatever reason, you have first_name, last_name,
+and full_name attributes.  The full name should obviously be a composite of the
+first and last names, but that will only work if we know full_name is determined
+last.  On top of that, we need to pass a function into our protection call that
+combines first and last names into one:
+
+<pre>
+protects_the_innocent [
+  [:first_name, :first_name],
+  [:last_name, :last_name],
+  [:full_name, lambda{|x| "#{x.first_name} #{x.last_name}"}]
+]
+</pre>
+
+We've done two things here.  First, we used a 2-dimensional array instead of a
+hash, because it preserves its order.  protects_the_innocent doesn't care, because
+it simply calls .first and .last on each set of values.
+
+Second, we've passed in an anonymous function, with the parameter being the object
+currently undergoing protection.  We use it to set the full name to a combination
+of first and last name.
+
 h3. Run the Rake Task
 
 You can protect all the models at once, only the ones you include, or all but the ones you exclude, respectively:
