@@ -26,15 +26,17 @@ In a nutshell, you need to:
 
 For the impatient, here's a two step example:
 
-<code lang="ruby" title="app/models/task.rb">
+<pre>
+  # app/models/task.rb
   class Task < ActiveRecord::Base
     protects_the_innocent :name=>:name, :email=>:email, :age=>:number, :description=>:text
   end
-</code>
+</pre>
 
-<code title="from the command line">
+<pre>
+  # command line
   rake protect:all
-</code>
+</pre>
 
 For a more in-depth understanding, read on.
 
@@ -78,6 +80,7 @@ Here are the available data types:
   <tr><td>:paragraphs</td>        <td>three latin-esque paragraphs</td> <td>Eos et esse consequatur quod labore debitis dicta. Quis placeat minus enim natus. Provident nesciunt aut nostrum voluptate molestiae omnis. Minus nostrum quia velit corporis consectetur sed nulla.<br>Quidem doloribus aut ut nam velit quos omnis. Illo labore consectetur culpa nihil quibusdam. Facilis et suscipit ipsam totam fugit.<br>Ut et et distinctio voluptatum. Non temporibus quas velit delectus eligendi accusantium illo. Illo in sunt adipisci pariatur quis enim voluptatum omnis. Ullam possimus ut odio.</td></tr>
 
   <tr><td>:nil</td>     <td>ruby's nil value</td> <td>nil</td></tr>
+  <tr><td>:number</td>  <td>any number</td>       <td>This is cool: it will return a random number, but close enough to the original to be believable in almost any circumstance.</td></tr>
 </table>
 
 There are also these special, custom data types.  I'll show you example input
@@ -85,7 +88,6 @@ instead of example output, since they're more complex:
 
 <table>
   <tr><th>data type</th>      <th>description</th>                <th>example usage</th>
-  <tr><td>:number</td>  <td>any number</td>       <td>This is cool: it will return a random number, but close enough to the original to be believable in almost any circumstance.</td></tr>
   <tr><td>lambda{|model| ...}</td>  <td>Any anonymous function you wish to pass in.  The parameter is the object being protected.</td><td>lambda{|x| x.user.display_name}</td></tr>
   <tr><td>any static value</td>     <td>You can pass in any static value></td><td>"turkey"</td>
 </table>
@@ -94,7 +96,7 @@ h3. Run the Rake Task
 
 You can protect all the models at once, only the ones you include, or all but the ones you exclude, respectively:
 
-<code>
+<pre>
   # Assume you have the following models: Client, Task, CustomerProfile, and Comment
   
   # protect all four models, alphabetically
@@ -105,7 +107,7 @@ You can protect all the models at once, only the ones you include, or all but th
   
   # protect all models except Comment, in alphabetical order
   rake protect:except MODELS=Comment 
-</code>
+</pre>
 
 Models can be listed in camelCase or under_scored form.
 
