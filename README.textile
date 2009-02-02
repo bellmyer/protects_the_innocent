@@ -2,7 +2,7 @@ h1. All Names Have Been Changed to Protect the Innocent.
 
 h2. What?
 
-This plugin allows you easily generate a version of your application's database
+This Ruby on Rails plugin allows you easily generate a version of your application's database
 that does not contain any proprietary data.  It "protects the innocent".
 
 It's built upon the Faker gem which generates random names, email addresses,
@@ -27,15 +27,15 @@ In a nutshell, you need to:
 For the impatient, here's a two step example:
 
 <pre>
-  # app/models/task.rb
-  class Task < ActiveRecord::Base
-    protects_the_innocent :name=>:name, :email=>:email, :age=>:number, :description=>:text
-  end
+# app/models/task.rb
+class Task < ActiveRecord::Base
+  protects_the_innocent :name=>:name, :email=>:email, :age=>:number, :description=>:text
+end
 </pre>
 
 <pre>
-  # command line
-  rake protect:all
+# command line
+rake protect:all
 </pre>
 
 For a more in-depth understanding, read on.
@@ -87,7 +87,7 @@ There are also these special, custom data types.  I'll show you example input
 instead of example output, since they're more complex:
 
 <table>
-  <tr><th width=250>data type</th>      <th>description</th>                <th width=250>example usage</th>
+  <tr><th width=200>data type</th>      <th>description</th>                <th width=250>example usage</th>
   <tr><td>lambda{|model| ...}</td>  <td>Any anonymous function you wish to pass in.  The parameter is the object being protected.</td><td>lambda{|x| x.user.display_name}</td></tr>
   <tr><td>any static value</td>     <td>You can pass in any static value></td><td>"turkey"</td>
 </table>
@@ -97,18 +97,30 @@ h3. Run the Rake Task
 You can protect all the models at once, only the ones you include, or all but the ones you exclude, respectively:
 
 <pre>
-  # Assume you have the following models: Client, Task, CustomerProfile, and Comment
+# Assume you have the following models: Client, Task, CustomerProfile, and Comment
   
-  # protect all four models, alphabetically
-  rake protect:all
+# protect all four models, alphabetically
+rake protect:all
   
-  # protect only Client, Task, and CustomerProfile models in the order listed
-  rake protect:only MODELS=Client,Task,CustomerProfile
+# protect only Client, Task, and CustomerProfile models in the order listed
+rake protect:only MODELS=Client,Task,CustomerProfile
   
-  # protect all models except Comment, in alphabetical order
-  rake protect:except MODELS=Comment 
+# protect all models except Comment, in alphabetical order
+rake protect:except MODELS=Comment 
 </pre>
 
 Models can be listed in camelCase or under_scored form.
+
+h3. To-Do List
+* test helpers
+* expanded syntax to allow greater control over generated content:
+** numbers:
+*** min value
+*** max value
+*** list of acceptable values
+** words, sentences, and paragraphs:
+*** specified number of items
+*** maximum length of generated string
+** all string types: flag for unique value
 
 Copyright (c) 2009 Jaime Bellmyer, released under the MIT license
