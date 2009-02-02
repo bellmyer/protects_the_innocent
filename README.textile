@@ -51,9 +51,9 @@ Here are the available data types:
   <tr><th>data type</th>      <th>description</th>                <th>example output</th>
   </tr>
 
-  <tr><td>company:</td>       <td>company name</td>               <td>Kuphal and Sons</td></tr>
-  <tr><td>catch phrase:</td>  <td>company slogan</td>             <td>Mandatory multimedia migration</td></tr>
-  <tr><td>bs:</td>            <td>a short, made-up sentence.</td> <td>iterate visionary methodologies</td></tr>
+  <tr><td>:company</td>       <td>company name</td>               <td>Kuphal and Sons</td></tr>
+  <tr><td>:catch phrase</td>  <td>company slogan</td>             <td>Mandatory multimedia migration</td></tr>
+  <tr><td>:bs</td>            <td>a short, made-up sentence.</td> <td>iterate visionary methodologies</td></tr>
 
   <tr><td>:name</td>          <td>person's full name</td>         <td>Domenic Bergnaum</td></tr>
   <tr><td>:first_name</td>    <td>person's first name only</td>   <td>Domenic</td></tr>
@@ -87,7 +87,7 @@ There are also these special, custom data types.  I'll show you example input
 instead of example output, since they're more complex:
 
 <table>
-  <tr><th>data type</th>      <th>description</th>                <th>example usage</th>
+  <tr><th width=250>data type</th>      <th>description</th>                <th width=250>example usage</th>
   <tr><td>lambda{|model| ...}</td>  <td>Any anonymous function you wish to pass in.  The parameter is the object being protected.</td><td>lambda{|x| x.user.display_name}</td></tr>
   <tr><td>any static value</td>     <td>You can pass in any static value></td><td>"turkey"</td>
 </table>
