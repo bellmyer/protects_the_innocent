@@ -27,7 +27,7 @@ module Bellmyer
           end
           
           model_instance.protect_the_innocent
-          model_instance.save_without_validation
+          model_instance.save
         end
       end
       
@@ -66,7 +66,7 @@ module Bellmyer
       def protect_nil;    nil; end
 
       def protect_number(num)
-        return num if num.nil? || num == 0
+        num = 1 if num.nil? || num == 0
         new_num = num
         
         # new number cannot equal the old, or we have no way of testing absolutely #
@@ -86,16 +86,20 @@ module Bellmyer
     module InstanceMethods
       def protect_the_innocent
         fields.each do |field, type|
-          if type == :number
-            self.attributes = {field => self.class.send("protect_#{type}", self.send(field))}
-          elsif type.is_a?(Symbol)
-            self.attributes = {field => self.class.send("protect_#{type}")}
-          elsif type.is_a?(Proc)
-            self.attributes = {field=>type.call(self)}
-          else
-            self.attributes = {field=>type}
-          end
+          protect_only(field, type)
         end
+      end
+      
+      def protect_only(field, type)
+        if type == :number
+          self.attributes = {field => self.class.send("protect_#{type}", self.send(field))}
+        elsif type.is_a?(Symbol)
+          self.attributes = {field => self.class.send("protect_#{type}")}
+        elsif type.is_a?(Proc)
+          self.attributes = {field=>type.call(self)}
+        else
+          self.attributes = {field=>type}
+        end        
       end
     end
   end

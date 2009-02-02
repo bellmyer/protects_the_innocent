@@ -21,10 +21,18 @@ h2. How?
 
 In a nutshell, you need to:
 
+# Add should_protect_as_innocent helper to your unit test (if you're using shoulda)
 # Add protection to your chosen models, choosing which fields should be protected.
 # Run the rake task that will actually protect all chosen model records.
 
-For the impatient, here's a two step example:
+For the impatient, here's a three step example:
+
+<pre>
+# test/unit/task_test.rb
+class TaskTest < ActiveSupport::TestCase
+  should_protect_the_innocent :name=>:name, :email=>:email, :age=>:number, :description=>:test
+end
+</pre>
 
 <pre>
 # app/models/task.rb
@@ -111,9 +119,14 @@ rake protect:except MODELS=Comment
 
 Models can be listed in camelCase or under_scored form.
 
+h3. Testing
+
+There is a test helper available if you use shoulda.  The example is at the top
+of this page.  It takes the same parameters as your call to protects_the_innocent
+in the model itself.
+
 h3. To-Do List
 
-* test helpers
 * expanded syntax to allow greater control over generated content:
 ** numbers:
 *** min value
@@ -122,6 +135,8 @@ h3. To-Do List
 ** words, sentences, and paragraphs:
 *** specified number of items
 *** maximum length of generated string
-** all string types: flag for unique value
+** all string types
+*** flag for unique value
+*** new value that is guaranteed to be different from original
 
 Copyright (c) 2009 Jaime Bellmyer, released under the MIT license
