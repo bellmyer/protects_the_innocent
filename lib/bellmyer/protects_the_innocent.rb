@@ -33,32 +33,38 @@ module Bellmyer
       
       protected
 
-      def protect_name;   Faker::Name.name; end
+      def protect_company;      Faker::Company.name; end
+      def protect_catch_phrase; Faker::Company.catch_phrase; end
+      def protect_bs;           Faker::Company.bs; end
       
+      def protect_name;       Faker::Name.name; end
       def protect_first_name; Faker::Name.first_name; end
-      
       def protect_last_name;  Faker::Name.last_name; end
       
-      def protect_words;  Faker::Lorem.words.join(' '); end
+      def protect_username; Faker::Internet.user_name; end
+      def protect_email;    Faker::Internet.email; end
+      def protect_phone;    Faker::PhoneNumber.phone_number; end
       
-      def protect_word;   Faker::Lorem.words(1).first; end
-      
-      def protect_sentence; Faker::Lorem.sentence; end
-      
-      def protect_domain; "#{Faker::Lorem.words(2).join('.')}.com"; end
-      
-      def protect_email;  Faker::Internet.email; end
-      
-      def protect_phone;  Faker::PhoneNumber.phone_number; end
+      def protect_ip;     "10.#{rand(256)}.#{rand(256)}.#{rand(256)}"; end
+      def protect_domain; "#{Faker::Internet.domain_word}.#{Faker::Internet.domain_name}"; end
+
+      def protect_address;      Faker::Address.street_address; end
+      def protect_city;         Faker::Address.city; end
+      def protect_state;        Faker::Address.us_state; end      
+      def protect_state_abbr;   Faker::Address.us_state_abbr; end
+      def protect_zip;          Faker::Address.zip_code; end     
+
+      def protect_word;       Faker::Lorem.words(1).first; end
+      def protect_words;      Faker::Lorem.words.join(' '); end
+      def protect_string;     Faker::Lorem.words.join(' '); end
+      def protect_sentence;   Faker::Lorem.sentence; end
+      def protect_sentences;  Faker::Lorem.sentences.join('  '); end
+      def protect_paragraph;  Faker::Lorem.paragraph; end
+      def protect_text;       Faker::Lorem.paragraph; end
+      def protect_paragraphs; Faker::Lorem.paragraphs.join("\n\n"); end
       
       def protect_nil;    nil; end
-      
-      def protect_text;   Faker::Lorem.paragraph; end
-      
-      def protect_ip;     "10.0.0.#{rand(256)}"; end
-      
-      def protect_city;   Faker::Address.city; end
-      
+
       def protect_number(num)
         return num if num.nil? || num == 0
         new_num = num

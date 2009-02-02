@@ -5,7 +5,7 @@ namespace :protect do
     models = Object.subclasses_of(ActiveRecord::Base).select{|x| x.instance_methods.include?('protect_the_innocent')}
 
     models.each do |m|
-      puts "protecting #{m.count} #{m.to_s.underscore} records"
+      puts "\nprotecting #{m.count} #{m.to_s.underscore} records"
       m.protect_the_innocent('.')
     end
   end
@@ -15,7 +15,7 @@ namespace :protect do
     models = ENV['MODELS'].split(/,/).map{|x| eval(x.camelize)}
 
     models.each do |m|
-      puts "protecting #{m.count} #{m.to_s.underscore} records"
+      puts "\nprotecting #{m.count} #{m.to_s.underscore} records"
       m.protect_the_innocent('.')
     end
   end
@@ -27,7 +27,7 @@ namespace :protect do
     models = Object.subclasses_of(ActiveRecord::Base).select{|x| x.instance_methods.include?('protect_the_innocent')}.reject{|x| exceptions.include?(x)}
 
     models.each do |m|
-      puts "protecting #{m.count} #{m.to_s.underscore} records"
+      puts "\nprotecting #{m.count} #{m.to_s.underscore} records"
       m.protect_the_innocent('.')
     end
   end

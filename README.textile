@@ -1,0 +1,112 @@
+h1. All Names Have Been Changed to Protect the Innocent.
+
+h2. What?
+
+This plugin allows you easily generate a version of your application's database
+that does not contain any proprietary data.  It "protects the innocent".
+
+It's built upon the Faker gem which generates random names, email addresses,
+text and more.
+
+
+h2. Why?
+
+Have you ever wanted to demo an existing, working application without revealing
+private data?  Maybe you want to bring another developer on board, and you need
+to give them realistic seed data.  The more complex your app gets, the harder it
+is to fake this with yaml files, or even factories.
+
+
+h2. How?
+
+In a nutshell, you need to:
+
+# Add protection to your chosen models, choosing which fields should be protected.
+# Run the rake task that will actually protect all chosen model records.
+
+For the impatient, here's a two step example:
+
+<code lang="ruby" title="app/models/task.rb">
+  class Task < ActiveRecord::Base
+    protects_the_innocent :name=>:name, :email=>:email, :age=>:number, :description=>:text
+  end
+</code>
+
+<code title="from the command line">
+  rake protect:all
+</code>
+
+For a more in-depth understanding, read on.
+
+h3. Add Protection to Your Chosen Models.
+
+In order to protect a model, call protects_the_innocent with a hash of field
+names you want to protect, along with the data type.  View the example above.
+
+Here are the available data types:
+
+<table>
+  <tr><th>data type</th>      <th>description</th>                <th>example output</th>
+  </tr>
+
+  <tr><td>company:</td>       <td>company name</td>               <td>Kuphal and Sons</td></tr>
+  <tr><td>catch phrase:</td>  <td>company slogan</td>             <td>Mandatory multimedia migration</td></tr>
+  <tr><td>bs:</td>            <td>a short, made-up sentence.</td> <td>iterate visionary methodologies</td></tr>
+
+  <tr><td>:name</td>          <td>person's full name</td>         <td>Domenic Bergnaum</td></tr>
+  <tr><td>:first_name</td>    <td>person's first name only</td>   <td>Domenic</td></tr>
+  <tr><td>:last_name</td>     <td>person's last name only</td>    <td>Bergnaum</td></tr>
+
+  <tr><td>:username</td>      <td>username</td>       <td>marcus.bechtelar</td></tr>
+  <tr><td>:email</td>         <td>email address</td>  <td>nora_koepp@streichkohler.uk</td></tr>
+  <tr><td>:phone</td>         <td>phone number</td>   <td>902-697-2898 x7579</td></tr>
+
+  <tr><td>:ip</td>            <td>ip address</td>   <td>10.6.157.23</td></tr>
+  <tr><td>:domain</td>        <td>domain (url)</td> <td>bahringerpagac.padberg.ca</td></tr>
+
+  <tr><td>:address</td>       <td>street address</td>     <td>521 Jakayla Island</td></tr>
+  <tr><td>:city</td>          <td>city</td>               <td>East Vallieberg</td></tr>
+  <tr><td>:state</td>         <td>state</td>              <td>Delaware</td></tr>
+  <tr><td>:state_abbr</td>    <td>state abbreviation</td> <td>MD</td></tr>
+  <tr><td>:zip</td>           <td>zip</td>                <td>32342-8723</td></tr>
+  
+  <tr><td>:word</td>              <td>one latin-esque word</td>         <td>eum</td></tr>
+  <tr><td>:words, :string</td>    <td>three latin-esque words</td>      <td>ab quia esse</td></tr>
+  <tr><td>:sentence</td>          <td>one latin-esque sentence</td>     <td>Praesentium impedit mollitia deleniti officiis cum numquam quasi aperiam.</td></tr>
+  <tr><td>:sentences</td>         <td>three latin-esque sentences</td>  <td>Numquam laboriosam placeat similique quis qui.  Quasi voluptatum quis omnis unde.  Ut quo voluptatem ut.</td></tr>
+  <tr><td>:paragraph, :text</td>  <td>one latin-esque paragraph</td>    <td>Molestiae aspernatur est ipsum dolores in suscipit. Recusandae eaque alias occaecati aut earum adipisci nostrum. Eligendi eum et doloremque. Delectus maxime est a nihil aperiam nemo alias qui.</td></tr>
+  <tr><td>:paragraphs</td>        <td>three latin-esque paragraphs</td> <td>Eos et esse consequatur quod labore debitis dicta. Quis placeat minus enim natus. Provident nesciunt aut nostrum voluptate molestiae omnis. Minus nostrum quia velit corporis consectetur sed nulla.<br>Quidem doloribus aut ut nam velit quos omnis. Illo labore consectetur culpa nihil quibusdam. Facilis et suscipit ipsam totam fugit.<br>Ut et et distinctio voluptatum. Non temporibus quas velit delectus eligendi accusantium illo. Illo in sunt adipisci pariatur quis enim voluptatum omnis. Ullam possimus ut odio.</td></tr>
+
+  <tr><td>:nil</td>     <td>ruby's nil value</td> <td>nil</td></tr>
+</table>
+
+There are also these special, custom data types.  I'll show you example input
+instead of example output, since they're more complex:
+
+<table>
+  <tr><th>data type</th>      <th>description</th>                <th>example usage</th>
+  <tr><td>:number</td>  <td>any number</td>       <td>This is cool: it will return a random number, but close enough to the original to be believable in almost any circumstance.</td></tr>
+  <tr><td>lambda{|model| ...}</td>  <td>Any anonymous function you wish to pass in.  The parameter is the object being protected.</td><td>lambda{|x| x.user.display_name}</td></tr>
+  <tr><td>any static value</td>     <td>You can pass in any static value></td><td>"turkey"</td>
+</table>
+
+h3. Run the Rake Task
+
+You can protect all the models at once, only the ones you include, or all but the ones you exclude, respectively:
+
+<code>
+  # Assume you have the following models: Client, Task, CustomerProfile, and Comment
+  
+  # protect all four models, alphabetically
+  rake protect:all
+  
+  # protect only Client, Task, and CustomerProfile models in the order listed
+  rake protect:only MODELS=Client,Task,CustomerProfile
+  
+  # protect all models except Comment, in alphabetical order
+  rake protect:except MODELS=Comment 
+</code>
+
+Models can be listed in camelCase or under_scored form.
+
+Copyright (c) 2009 Jaime Bellmyer, released under the MIT license
