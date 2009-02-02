@@ -112,6 +112,7 @@ rake protect:except MODELS=Comment
 Models can be listed in camelCase or under_scored form.
 
 h3. To-Do List
+
 * test helpers
 * expanded syntax to allow greater control over generated content:
 ** numbers:
