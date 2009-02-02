@@ -1,6 +1,18 @@
 h1. All Names Have Been Changed to Protect the Innocent.
 
-h2. What?
+# "What?":#what
+# "Why?":#why
+# "How?":#how
+## "Testing":#how-testing
+## "Add Protection to your Chosen Models":#how-add_protection
+## "Run the Rake Task":#how-run_the_rake_task
+# "Advanced Usage":#advanced
+## "Setting the Order that Models are Protected":#advanced-model_order
+## "Setting the Order that Fields are Protected":#advanced-field_order
+# "To-Do List":#todo
+
+
+h2. <a name="what">What?</a>
 
 This Ruby on Rails plugin allows you easily generate a version of your application's database
 that does not contain any proprietary data.  It "protects the innocent".
@@ -9,15 +21,20 @@ It's built upon the Faker gem which generates random names, email addresses,
 text and more.
 
 
-h2. Why?
+h2. <a name="why">Why?</a>
 
 Have you ever wanted to demo an existing, working application without revealing
 private data?  Maybe you want to bring another developer on board, and you need
-to give them realistic seed data.  The more complex your app gets, the harder it
-is to fake this with yaml files, or even factories.
+to give them realistic seed data.  
+
+Why not just fake this data?  The more complex your app gets, the harder it
+is to fake this with yaml files, or even factories. But there's another reason:
+there's no substitute for real-world data.  Any records you create by hand will 
+be based on your *assumptions* of how your app is used.  Maybe you never thought 
+to test how your view handles a cart with zero items, for instance.
 
 
-h2. How?
+h2. <a name="how">How?</a>
 
 In a nutshell, you need to:
 
@@ -48,7 +65,13 @@ rake protect:all
 
 For a more in-depth understanding, read on.
 
-h3. Add Protection to Your Chosen Models.
+h3. <a href="how-testing">Testing</a>
+
+There is a test helper available if you use shoulda.  Use the example above.
+It takes the same parameters as your call to protects_the_innocent
+in the model itself.
+
+h3. <a name="how-add_protection">Add Protection to Your Chosen Models.</a>
 
 In order to protect a model, call protects_the_innocent with a hash of field
 names you want to protect, along with the data type.  View the example above.
@@ -100,7 +123,51 @@ instead of example output, since they're more complex:
   <tr><td>any static value</td>     <td>You can pass in any static value></td><td>"turkey"</td>
 </table>
 
-h3. Order in the Court
+h3. <a name="how-run_the_rake_task">Run the Rake Task</a>
+
+You can protect all the models at once, only the ones you include, or all but the ones you exclude, respectively:
+
+<pre>
+# Assume you have the following models: Client, Task, CustomerProfile, and Comment
+  
+# protect all four models, alphabetically
+rake protect:all
+  
+# protect only Client, Task, and CustomerProfile models in the order listed
+rake protect:only MODELS=Client,Task,CustomerProfile
+  
+# protect all models except Comment, in alphabetical order
+rake protect:except MODELS=Comment 
+</pre>
+
+Models can be listed in camelCase or under_scored form.
+
+h2. <a name="advanced">Advanced Usage</a>
+
+h3. <a name="advanced-model_order">Setting the Order that Models are Protected</a>
+
+Sometimes the fake data in one model will depend on the fake data already created
+in another model.  In this case, order is important.  Models are protected
+alphabetically by name, by default.  You can create a short custom rake task to
+specify any order you want:
+
+<pre>
+# lib/tasks/custom_protection.rake
+
+namespace :protect do
+  desc "Protect models in the order I choose"
+  task :sorted => :environment do
+    ENV['MODELS'] = "task,client"
+    Rake::Task["protect:only"].invoke
+  end
+end
+</pre>
+
+All we're doing here is calling the protect:only task that already exists.  We're
+setting the MODELS environment variable to a comma-separated list of models, in
+the order we choose.
+
+h3. <a name="advanced-field_order">Setting the Order that Fields are Protected</a>
 
 Sometimes certain fields depend on others when a record is in the act of being
 protected. Let's say, for whatever reason, you have first_name, last_name,
@@ -125,32 +192,7 @@ Second, we've passed in an anonymous function, with the parameter being the obje
 currently undergoing protection.  We use it to set the full name to a combination
 of first and last name.
 
-h3. Run the Rake Task
-
-You can protect all the models at once, only the ones you include, or all but the ones you exclude, respectively:
-
-<pre>
-# Assume you have the following models: Client, Task, CustomerProfile, and Comment
-  
-# protect all four models, alphabetically
-rake protect:all
-  
-# protect only Client, Task, and CustomerProfile models in the order listed
-rake protect:only MODELS=Client,Task,CustomerProfile
-  
-# protect all models except Comment, in alphabetical order
-rake protect:except MODELS=Comment 
-</pre>
-
-Models can be listed in camelCase or under_scored form.
-
-h3. Testing
-
-There is a test helper available if you use shoulda.  The example is at the top
-of this page.  It takes the same parameters as your call to protects_the_innocent
-in the model itself.
-
-h3. To-Do List
+h2. <a name="todo">To-Do List</a>
 
 * expanded syntax to allow greater control over generated content:
 ** numbers:

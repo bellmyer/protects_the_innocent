@@ -5,9 +5,11 @@ namespace :protect do
     models = Object.subclasses_of(ActiveRecord::Base).select{|x| x.instance_methods.include?('protect_the_innocent')}
 
     models.each do |m|
-      puts "\nprotecting #{m.count} #{m.to_s.underscore} records"
+      print "\nprotecting #{m.count} #{m.to_s.underscore} records"
       m.protect_the_innocent('.')
     end
+    
+    puts
   end
   
   desc "protect only the comma-separated models in the MODELS environment variable"
@@ -15,9 +17,11 @@ namespace :protect do
     models = ENV['MODELS'].split(/,/).map{|x| eval(x.camelize)}
 
     models.each do |m|
-      puts "\nprotecting #{m.count} #{m.to_s.underscore} records"
+      print "\nprotecting #{m.count} #{m.to_s.underscore} records"
       m.protect_the_innocent('.')
     end
+    
+    puts
   end
   
   desc "protect all protected models except the comma-separated list in the MODELS environment variable"
@@ -27,9 +31,11 @@ namespace :protect do
     models = Object.subclasses_of(ActiveRecord::Base).select{|x| x.instance_methods.include?('protect_the_innocent')}.reject{|x| exceptions.include?(x)}
 
     models.each do |m|
-      puts "\nprotecting #{m.count} #{m.to_s.underscore} records"
+      print "\nprotecting #{m.count} #{m.to_s.underscore} records"
       m.protect_the_innocent('.')
     end
+    
+    puts
   end
   
 #  Sometimes, if data in one table depends on data in another, you may 
@@ -41,7 +47,7 @@ namespace :protect do
 #    task :sorted => :environment do
 #      models = [Model1, Model3, Model2]
 #      models.each do |m|
-#        puts "protecting #{m.count} #{m.to_s_underscore} records"
+#        print "\nprotecting #{m.count} #{m.to_s_underscore} records"
 #        m.protect_the_innocent('.')
 #      end
 #    end
