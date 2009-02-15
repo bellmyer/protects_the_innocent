@@ -11,6 +11,9 @@ h1. All Names Have Been Changed to Protect the Innocent.
 ## "Setting the Order that Fields are Protected":#advanced-field_order
 # "To-Do List":#todo
 
+h2. Shameless Plug
+
+If you like what you see, why not recommend me on "WorkingWithRails?":http://www.workingwithrails.com/person/14647-jaime-bellmyer
 
 h2. <a name="what">What?</a>
 
@@ -44,7 +47,7 @@ you copy your database to a development version, and run the rake tasks there.
 
 In a nutshell, you need to:
 
-# Add should_protect_as_innocent helper to your unit test (if you're using shoulda)
+# Add should_protect_as_innocent helper to your unit test (if you're using "shoulda":http://github.com/thoughtbot/shoulda)
 # Add protection to your chosen models, choosing which fields should be protected.
 # Run the rake task that will actually protect all chosen model records.
 
